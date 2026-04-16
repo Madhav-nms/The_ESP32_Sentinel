@@ -1,2 +1,2 @@
 # The_ESP32_Sentinel
-ESP32 Sentinel is a device that detects motion and streams events to AWS IoT Core over secure MQTT.
+ESP32 Sentinel is a firmware that acts as a middleware between physical and hardware and the cloud, this project concentrates more on the middleware, briging a PIR motion sensor on ESP32 to AWS IoT Core over MQTT connection. In simple, everytime a motion is detected, a timestamped JSON event travels from hardware interrupt through a FreeRTOS task queue across TLS connection into AWS in real time. It also supports remote firmware updates triggered entirely from cloud, with automatic rollback if any update fails.
