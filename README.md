@@ -5,12 +5,8 @@ ESP32 Sentinel is firmware that acts as middleware between physical hardware and
 Every time motion detected, a timestamped JSON event travels from a hardware interrupt through a FreeRTOS task queue, across a mutually authenticated TLS connection and into AWS IoT Core in real time. The device also supports remote firmware updates triggered entirely from the cloud, with automatic rollback if the update fails.
 
 ## Hardware 
-
-![Motion Detected - LED active](hw_active.png)
-
 LED triggers in real time whem PIR sensor detects motion 
-
-![Hardware setup](hw_setup.png)
+![Motion Detected - LED active](hw_active.png)
 
 | Component     | Pin    | Notes                        |
 |---------------|--------|------------------------------|
@@ -46,3 +42,23 @@ AWS IoT Core (MQTT over TLS 1.2, port 8883)
             Flashes new partition
             Reboots → rollback if unhealthy
 ```
+
+## Live Demo
+ 
+![AWS IoT Core receiving live motion events](aws_mqtt_live.png)
+Real motion events arriving in AWS IoT Core MQTT Test Client
+ 
+![Normal operation — serial monitor](serial_monitor.png)
+Boot sequence, MQTT connection, motion publishing, and PIR diagnostics
+ 
+## OTA in Action
+ 
+![OTA firmware download and flash](ota_flash.png)
+Firmware downloading from AWS S3, written to flash — PIR still publishing during download
+ 
+![Device recovery after OTA reboot](ota_recovery.png)
+Device reboots, reconnects to WiFi, resyncs time, reconnects to AWS — fully autonomous
+ 
+![Firmware hosted on AWS S3](Amazon_S3.png)
+995.8KB firmware binary hosted on S3, downloaded over HTTPS during OTA
+ 
