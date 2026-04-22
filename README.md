@@ -6,5 +6,43 @@ Every time motion detected, a timestamped JSON event travels from a hardware int
 
 ## Hardware 
 
-(docs/hw_active.png)
+![Motion Detected - LED active](docs/hw_active.png)
 
+LED triggers in real time whem PIR sensor detects motion 
+
+![Hardware setup](docs/hw_setup.png)
+
+| Component     | Pin    | Notes                        |
+|---------------|--------|------------------------------|
+| PIR Sensor    | GPIO 4 | HC-SR501, 3.3V or 5V VCC    |
+| Onboard LED   | GPIO 2 | Mirrors PIR state            |
+| GND           | GND    | Shared between ESP32 and PIR |
+
+## System Architecture
+ 
+```
+PIR Sensor (GPIO 4)
+      │
+      │  Hardware interrupt fires on motion
+      ▼
+IRAM_ATTR ISR
+      │  Timestamps event, posts to queue atomically
+      ▼
+16-deep ISR-safe FreeRTOS Queue
+      │  Decouples interrupt from network I/O
+      ▼
+comm_task (FreeRTOS Task)
+      │  Waits for WiFi + MQTT connectivity
+      │  Formats JSON payload
+      ▼
+AWS IoT Core (MQTT over TLS 1.2, port 8883)
+      │
+      ├──▶  Real-time monitoring (MQTT Test Client)
+      └──▶  OTA command channel (cloud → device)
+                  │
+                  ▼
+            OTA Task (dedicated)
+            Downloads firmware from S3
+            Flashes new partition
+            Reboots → rollback if unhealthy
+```
