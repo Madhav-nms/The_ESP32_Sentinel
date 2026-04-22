@@ -6,6 +6,7 @@ Every time motion detected, a timestamped JSON event travels from a hardware int
 
 ## Hardware 
 LED triggers in real time whem PIR sensor detects motion 
+
 ![Motion Detected - LED active](hw_active.png)
 
 | Component     | Pin    | Notes                        |
