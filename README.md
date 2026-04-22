@@ -6,11 +6,11 @@ Every time motion detected, a timestamped JSON event travels from a hardware int
 
 ## Hardware 
 
-![Motion Detected - LED active](docs/hw_active.png)
+![Motion Detected - LED active](hw_active.png)
 
 LED triggers in real time whem PIR sensor detects motion 
 
-![Hardware setup](docs/hw_setup.png)
+![Hardware setup](hw_setup.png)
 
 | Component     | Pin    | Notes                        |
 |---------------|--------|------------------------------|
@@ -26,7 +26,7 @@ PIR Sensor (GPIO 4)
       │  Hardware interrupt fires on motion
       ▼
 IRAM_ATTR ISR
-      │  Timestamps event, posts to queue atomically
+      │  Timestamps event, posts to queue automically
       ▼
 16-deep ISR-safe FreeRTOS Queue
       │  Decouples interrupt from network I/O
