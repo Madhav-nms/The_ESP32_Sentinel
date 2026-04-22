@@ -2,12 +2,17 @@
 ### Edge to Cloud IoT Motion Detection Firmware
 
 ESP32 Sentinel is firmware that acts as middleware between physical hardware and the cloud, bridging a PIR motion sensor on an ESP32 microcontroller to AWS IoT Core over a secure, authenticated MQTT connection. 
+
+
 Every time motion detected, a timestamped JSON event travels from a hardware interrupt through a FreeRTOS task queue, across a mutually authenticated TLS connection and into AWS IoT Core in real time. The device also supports remote firmware updates triggered entirely from the cloud, with automatic rollback if the update fails.
 
 ## Hardware 
-LED triggers in real time whem PIR sensor detects motion 
 
 ![Motion Detected - LED active](hw_active.png)
+
+LED triggers in real time whem PIR sensor detects motion 
+
+### Hardware Setup: 
 
 | Component     | Pin    | Notes                        |
 |---------------|--------|------------------------------|
@@ -44,7 +49,7 @@ AWS IoT Core (MQTT over TLS 1.2, port 8883)
             Reboots → rollback if unhealthy
 ```
 
-## Live Demo
+## Demo
  
 ![AWS IoT Core receiving live motion events](aws_mqtt_live.png)
 Real motion events arriving in AWS IoT Core MQTT Test Client
@@ -63,4 +68,22 @@ Device reboots, reconnects to WiFi, resyncs time, reconnects to AWS — fully au
 ![Firmware hosted on AWS S3](Amazon_S3.png)
 995.8KB firmware binary hosted on S3, downloaded over HTTPS during OTA
 
+## Project Structure
 
+```
+The_ESP32_Sentinel/
+├── app_main.c           Entry point — wires all modules together
+├── app_config.h         All configurable constants (WiFi, MQTT, GPIO)
+├── mqtt.c / mqtt.h      MQTT client with mutual TLS for AWS IoT Core
+├── wifi.c / wifi.h      WiFi STA manager with auto-reconnect
+├── pir.c / pir.h        GPIO ISR, FreeRTOS queue, diagnostic counters
+├── ota.c / ota.h        HTTPS OTA update with rollback protection
+├── time_sync.c / .h     SNTP time synchronization
+├── hw_active.png        Hardware photo — LED active on motion
+├── hw_setup.png         Hardware photo — wiring setup
+├── aws_mqtt_live.png    AWS IoT Core receiving live motion events
+├── serial_monitor.png   Boot sequence and normal operation logs
+├── ota_flash.png        OTA firmware download and flash
+├── ota_recovery.png     Device reboot and reconnection after OTA
+└── Amazon_S3.png        Firmware binary hosted on AWS S3
+```
