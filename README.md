@@ -63,17 +63,4 @@ Device reboots, reconnects to WiFi, resyncs time, reconnects to AWS — fully au
 ![Firmware hosted on AWS S3](Amazon_S3.png)
 995.8KB firmware binary hosted on S3, downloaded over HTTPS during OTA
 
-## Project Structure
- 
-```
-main/
-├── app_main.c       Entry point — wires all modules together
-├── app_config.h     All configurable constants (WiFi, MQTT, GPIO)
-├── pir.c / .h       GPIO ISR, FreeRTOS queue, diagnostic counters
-├── wifi.c / .h      WiFi STA manager with auto-reconnect
-├── mqtt.c / .h      MQTT client with mutual TLS for AWS IoT Core
-├── time_sync.c / .h SNTP time synchronization
-├── ota.c / .h       HTTPS OTA update with rollback protection
-├── certs/           AWS IoT certificates (not committed — see certs/README.md)
-└── docs/            Screenshots and documentation
-```
+
