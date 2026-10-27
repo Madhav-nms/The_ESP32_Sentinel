@@ -25,7 +25,7 @@ static void IRAM_ATTR pir_isr_handler(void *arg)
         .level = gpio_get_level((gpio_num_t)PIR_GPIO),  //current GPIO level
     };
 
-    if (xQueueSendFromISR(s_pir_queue, &evt, &hpw) != pdTRUE) {
+    if (xQueueSendFromISR(s_pir_queue, &evt, &task_woken) != pdTRUE) {
         s_isr_dropped++;  // queue was full, event lost
     }
 
