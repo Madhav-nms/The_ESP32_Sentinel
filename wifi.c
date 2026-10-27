@@ -73,7 +73,7 @@ void wifi_mgr_start(EventGroupHandle_t evbits, wifi_on_got_ip_cb_t on_ip)
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_cfg));
     ESP_ERROR_CHECK(esp_wifi_start());
-    ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE)); // power save for low latency
+    ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE)); // disables power save for low latency
 
 
     ESP_LOGI(TAG, "WiFi init done (SSID='%s')", WIFI_SSID);
